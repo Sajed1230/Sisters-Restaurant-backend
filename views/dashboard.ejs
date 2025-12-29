@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Owner Dashboard - Sisters Restaurant</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --navy-red: #6B0F1A;
+      --navy-red-dark: #4A0A12;
+      --navy-red-light: #8B1A2A;
+      --yellow-light: #FFF8DC;
+      --yellow-gold: #FFD700;
+      --yellow-warm: #FFEAA7;
+      --yellow-cream: #FEF9E7;
+      --yellow-accent: #FFC107;
+      --white: #FFFFFF;
+      --text-dark: #2C2C2C;
+      --text-light: #666666;
+      --shadow-light: rgba(107, 15, 26, 0.1);
+      --shadow-medium: rgba(107, 15, 26, 0.2);
+      --shadow-heavy: rgba(107, 15, 26, 0.3);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+      background: linear-gradient(135deg, var(--yellow-cream) 0%, var(--yellow-light) 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: var(--text-dark);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--navy-red) 0%, var(--navy-red-light) 100%);
+      color: var(--white);
+      padding: 30px;
+      border-radius: 24px;
+      margin-bottom: 30px;
+      box-shadow: 0 12px 40px var(--shadow-heavy);
+      text-align: center;
+      position: relative;
+    }
+
+    .language-switcher-header {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 5px;
+    }
+
+    .lang-switch-btn {
+      padding: 8px 16px;
+      border: 2px solid var(--yellow-warm);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--yellow-gold);
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .lang-switch-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .lang-switch-btn.active {
+      background: var(--yellow-gold);
+      color: var(--navy-red);
+      border-color: var(--yellow-gold);
+    }
+
+    .header h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+      color: var(--yellow-gold);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      background: var(--yellow-cream);
+      color: var(--navy-red);
+      border: 2px solid var(--yellow-warm);
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tab-button:hover {
+      background: var(--yellow-warm);
+      transform: translateY(-2px);
+    }
+
+    .tab-button.active {
+      background: linear-gradient(135deg, var(--navy-red) 0%, var(--navy-red-light) 100%);
+      color: var(--yellow-gold);
+      border-color: var(--navy-red);
+    }
+
+    .tab-button.show-all {
+      background: linear-gradient(135deg, var(--yellow-gold) 0%, var(--yellow-accent) 100%);
+      color: var(--navy-red-dark);
+      border-color: var(--yellow-gold);
+      font-weight: 700;
+    }
+
+    .tab-button.show-all.active {
+      background: linear-gradient(135deg, var(--navy-red) 0%, var(--navy-red-light) 100%);
+      color: var(--yellow-gold);
+      border-color: var(--navy-red);
+    }
+
+    .dashboard-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+
+    .card {
+      background: var(--white);
+      padding: 30px;
+      border-radius: 24px;
+      box-shadow: 0 8px 30px var(--shadow-light);
+      border: 1px solid rgba(255, 248, 220, 0.5);
+    }
+
+    .card h2 {
+      color: var(--navy-red);
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-dark);
+      font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--yellow-warm);
+      border-radius: 12px;
+      font-size: 16px;
+      font-family: inherit;
+      background: var(--yellow-cream);
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--navy-red);
+      background: var(--white);
+      box-shadow: 0 0 0 4px var(--shadow-light);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .language-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .btn {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--navy-red) 0%, var(--navy-red-light) 100%);
+      color: var(--yellow-gold);
+      box-shadow: 0 6px 20px var(--shadow-medium);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--shadow-medium);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+      color: var(--white);
+      margin-top: 10px;
+    }
+
+    .btn-danger:hover {
+      transform: translateY(-2px);
+    }
+
+    .items-list {
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    .item-card {
+      background: var(--yellow-cream);
+      padding: 0;
+      border-radius: 16px;
+      margin-bottom: 15px;
+      border: 2px solid var(--yellow-warm);
+      transition: all 0.3s ease;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .item-card:hover {
+      border-color: var(--navy-red);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px var(--shadow-light);
+    }
+
+    .item-image-container {
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+      background: var(--yellow-warm);
+      position: relative;
+    }
+
+    .item-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .item-card:hover .item-image {
+      transform: scale(1.05);
+    }
+
+    .item-category-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: linear-gradient(135deg, var(--navy-red) 0%, var(--navy-red-light) 100%);
+      color: var(--yellow-gold);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      z-index: 10;
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 10px;
+      padding: 15px 20px 0 20px;
+    }
+
+    .item-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy-red);
+      margin-bottom: 5px;
+    }
+
+    .item-price {
+      background: linear-gradient(135deg, var(--yellow-gold) 0%, var(--yellow-accent) 100%);
+      color: var(--navy-red-dark);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .item-description {
+      color: var(--text-light);
+      font-size: 14px;
+      margin-bottom: 10px;
+      padding: 0 20px;
+      line-height: 1.6;
+    }
+
+    .item-actions {
+      display: flex;
+      gap: 10px;
+      padding: 0 20px 20px 20px;
+      margin-top: auto;
+    }
+
+    .btn-small {
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-edit {
+      background: var(--yellow-warm);
+      color: var(--navy-red);
+    }
+
+    .btn-edit:hover {
+      background: var(--yellow-gold);
+    }
+
+    .btn-delete {
+      background: #dc3545;
+      color: var(--white);
+    }
+
+    .btn-delete:hover {
+      background: #c82333;
+    }
+
+    .language-switcher {
+      display: flex;
+      gap: 5px;
+    }
+
+    .lang-btn {
+      padding: 6px 16px;
+      border: 2px solid var(--yellow-warm);
+      border-radius: 20px;
+      background: var(--yellow-cream);
+      color: var(--navy-red);
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .lang-btn:hover {
+      background: var(--yellow-warm);
+      transform: translateY(-1px);
+    }
+
+    .lang-btn.active {
+      background: linear-gradient(135deg, var(--navy-red) 0%, var(--navy-red-light) 100%);
+      color: var(--yellow-gold);
+      border-color: var(--navy-red);
+    }
+
+    .language-input-container {
+      position: relative;
+    }
+
+    .lang-input {
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    .lang-input:not(.active) {
+      display: none !important;
+    }
+
+    .message {
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 2px solid #c3e6cb;
+    }
+
+    .message.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 2px solid #f5c6cb;
+    }
+
+    /* Tablet and below */
+    @media (max-width: 1024px) {
+      .dashboard-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .header {
+        padding: 20px;
+      }
+
+      .header h1 {
+        font-size: 28px;
+      }
+    }
+
+    /* Mobile landscape and below */
+    @media (max-width: 768px) {
+      body {
+        padding: 15px;
+      }
+
+      .container {
+        max-width: 100%;
+      }
+
+      .header {
+        padding: 20px 15px;
+        border-radius: 16px;
+        margin-bottom: 20px;
+      }
+
+      .language-switcher-header {
+        top: 10px;
+        right: 10px;
+        gap: 4px;
+      }
+
+      .lang-switch-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+
+      .header h1 {
+        font-size: 24px;
+        margin-bottom: 8px;
+        padding-right: 80px;
+      }
+
+      .header p {
+        font-size: 14px;
+      }
+
+      .tabs {
+        gap: 8px;
+        margin-bottom: 20px;
+        overflow-x: auto;
+        padding-bottom: 5px;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .tabs::-webkit-scrollbar {
+        height: 4px;
+      }
+
+      .tabs::-webkit-scrollbar-thumb {
+        background: var(--navy-red);
+        border-radius: 2px;
+      }
+
+      .tab-button {
+        padding: 10px 16px;
+        font-size: 14px;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .dashboard-content {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .card {
+        padding: 20px 15px;
+        border-radius: 16px;
+      }
+
+      .card h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        padding: 10px 12px;
+        font-size: 14px;
+        border-radius: 10px;
+      }
+
+      .form-group textarea {
+        min-height: 80px;
+      }
+
+      .language-switcher {
+        gap: 4px;
+      }
+
+      .lang-btn {
+        padding: 5px 12px;
+        font-size: 12px;
+      }
+
+      .btn {
+        padding: 12px 20px;
+        font-size: 14px;
+      }
+
+      .items-list {
+        max-height: 500px;
+      }
+
+      .item-card {
+        margin-bottom: 12px;
+        border-radius: 12px;
+      }
+
+      .item-image-container {
+        height: 150px;
+      }
+
+      .item-header {
+        padding: 12px 15px 0 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .item-name {
+        font-size: 16px;
+      }
+
+      .item-price {
+        font-size: 12px;
+        padding: 4px 10px;
+      }
+
+      .item-description {
+        font-size: 13px;
+        padding: 0 15px;
+        margin-bottom: 8px;
+      }
+
+      .item-actions {
+        padding: 0 15px 15px 15px;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .btn-small {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+      }
+
+      .item-category-badge {
+        font-size: 10px;
+        padding: 4px 8px;
+        top: 8px;
+        left: 8px;
+      }
+    }
+
+    /* Small mobile */
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+
+      .header {
+        padding: 15px 10px;
+        border-radius: 12px;
+      }
+
+      .language-switcher-header {
+        top: 8px;
+        right: 8px;
+        gap: 3px;
+      }
+
+      .lang-switch-btn {
+        padding: 5px 10px;
+        font-size: 11px;
+      }
+
+      .header h1 {
+        font-size: 20px;
+        padding-right: 70px;
+      }
+
+      .header p {
+        font-size: 12px;
+      }
+
+      .tabs {
+        gap: 6px;
+        margin-bottom: 15px;
+      }
+
+      .tab-button {
+        padding: 8px 12px;
+        font-size: 12px;
+        border-radius: 20px;
+      }
+
+      .card {
+        padding: 15px 10px;
+        border-radius: 12px;
+      }
+
+      .card h2 {
+        font-size: 18px;
+        margin-bottom: 12px;
+      }
+
+      .form-group {
+        margin-bottom: 12px;
+      }
+
+      .form-group label {
+        font-size: 13px;
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        padding: 8px 10px;
+        font-size: 13px;
+      }
+
+      .btn {
+        padding: 10px 16px;
+        font-size: 13px;
+      }
+
+      .items-list {
+        max-height: 400px;
+      }
+
+      .item-image-container {
+        height: 120px;
+      }
+
+      .item-name {
+        font-size: 15px;
+      }
+
+      .item-description {
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .message {
+        padding: 12px;
+        font-size: 13px;
+        margin-bottom: 15px;
+      }
+    }
+
+    /* Extra small mobile */
+    @media (max-width: 360px) {
+      .header h1 {
+        font-size: 18px;
+      }
+
+      .tab-button {
+        padding: 6px 10px;
+        font-size: 11px;
+      }
+
+      .card {
+        padding: 12px 8px;
+      }
+
+      .card h2 {
+        font-size: 16px;
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        padding: 8px;
+        font-size: 12px;
+      }
+
+      .btn {
+        padding: 10px 12px;
+        font-size: 12px;
+      }
+    }
+
+    /* Landscape orientation for mobile */
+    @media (max-width: 768px) and (orientation: landscape) {
+      .items-list {
+        max-height: 300px;
+      }
+
+      .item-image-container {
+        height: 100px;
+      }
+    }
+
+    /* Print styles */
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+
+      .header,
+      .tabs,
+      .card:first-child,
+      .item-actions {
+        display: none;
+      }
+
+      .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="language-switcher-header">
+        <button class="lang-switch-btn active" id="lang-en" onclick="switchDashboardLanguage('en')">EN</button>
+        <button class="lang-switch-btn" id="lang-ar" onclick="switchDashboardLanguage('ar')">AR</button>
+      </div>
+      <h1 id="header-title">🍽️ Owner Dashboard</h1>
+      <p id="header-subtitle">Sisters Restaurant - Menu Management</p>
+    </div>
+
+    <div id="message"></div>
+
+    <div class="tabs">
+      <button class="tab-button show-all active" id="show-all-btn" data-category="all">🌟 <span class="lang-text" data-key="showAll">Show All</span></button>
+      <button class="tab-button" data-category="appetizers"><span class="lang-text" data-key="appetizers">Appetizers</span></button>
+      <button class="tab-button" data-category="mainDishes"><span class="lang-text" data-key="mainDishes">Main Dishes</span></button>
+      <button class="tab-button" data-category="grills"><span class="lang-text" data-key="grills">Grills</span></button>
+      <button class="tab-button" data-category="desserts"><span class="lang-text" data-key="desserts">Desserts</span></button>
+      <button class="tab-button" data-category="beverages"><span class="lang-text" data-key="beverages">Beverages</span></button>
+      <button class="tab-button" data-category="sandwiches"><span class="lang-text" data-key="sandwiches">Sandwiches</span></button>
+    </div>
+
+    <div class="dashboard-content">
+      <div class="card">
+        <h2 id="form-title">Add New Item</h2>
+        <form id="item-form">
+          <input type="hidden" id="item-id">
+          <input type="hidden" id="item-category">
+
+          <div class="form-group">
+            <label class="lang-text" data-key="category">Category</label>
+            <span class="lang-text" data-key="categoryHint" style="color: var(--text-light); font-size: 12px; font-weight: normal; display: block; margin-top: -5px; margin-bottom: 8px;">(you can change this when editing)</span>
+            <select id="category-select" required style="cursor: pointer;">
+              <option value="appetizers" class="lang-text" data-key="appetizers">Appetizers</option>
+              <option value="mainDishes" class="lang-text" data-key="mainDishes">Main Dishes</option>
+              <option value="grills" class="lang-text" data-key="grills">Grills</option>
+              <option value="desserts" class="lang-text" data-key="desserts">Desserts</option>
+              <option value="beverages" class="lang-text" data-key="beverages">Beverages</option>
+              <option value="sandwiches" class="lang-text" data-key="sandwiches">Sandwiches</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <label style="margin-bottom: 0;">Name</label>
+              <div class="language-switcher" style="display: flex; gap: 5px;">
+                <button type="button" class="lang-btn active" data-lang="en" onclick="switchLanguage('en')">EN</button>
+                <button type="button" class="lang-btn" data-lang="ar" onclick="switchLanguage('ar')">AR</button>
+              </div>
+            </div>
+            <div class="language-input-container">
+              <input type="text" id="name-en" class="lang-input active" data-lang="en" placeholder="Enter name in English" required>
+              <input type="text" id="name-ar" class="lang-input" data-lang="ar" placeholder="أدخل الاسم بالعربية" required style="display: none;">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <label style="margin-bottom: 0;">Description</label>
+              <div class="language-switcher" style="display: flex; gap: 5px;">
+                <button type="button" class="lang-btn active" data-lang="en" onclick="switchDescriptionLanguage('en')">EN</button>
+                <button type="button" class="lang-btn" data-lang="ar" onclick="switchDescriptionLanguage('ar')">AR</button>
+              </div>
+            </div>
+            <div class="language-input-container">
+              <textarea id="description-en" class="lang-input active" data-lang="en" placeholder="Enter description in English" required></textarea>
+              <textarea id="description-ar" class="lang-input" data-lang="ar" placeholder="أدخل الوصف بالعربية" required style="display: none;"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Price</label>
+            <input type="number" id="price" min="0" required>
+          </div>
+
+          <div class="form-group">
+            <label>Image</label>
+            <input type="file" id="image-file" accept="image/*" style="margin-bottom: 10px;">
+            <p style="font-size: 12px; color: var(--text-light); margin-bottom: 10px;">Or enter image URL:</p>
+            <input type="url" id="image" placeholder="https://example.com/image.jpg">
+            <div id="image-preview" style="margin-top: 10px; display: none;">
+              <img id="preview-img" src="" alt="Preview" style="max-width: 200px; border-radius: 8px; border: 2px solid var(--yellow-warm);">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="submit-btn">Add Item</button>
+          <button type="button" class="btn btn-danger" id="cancel-btn" style="display: none;">Cancel Edit</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2 class="lang-text" data-key="menuItems">Menu Items</h2>
+        <div class="items-list" id="items-list">
+          <p>Loading items...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = '/api/menu';
+    let currentCategory = 'all';
+    let editingItem = null;
+    let showAll = true;
+    let currentLang = localStorage.getItem('dashboard-lang') || 'en';
+
+    // Translations object
+    const translations = {
+      en: {
+        headerTitle: '🍽️ Owner Dashboard',
+        headerSubtitle: 'Sisters Restaurant - Menu Management',
+        showAll: 'Show All',
+        appetizers: 'Appetizers',
+        mainDishes: 'Main Dishes',
+        grills: 'Grills',
+        desserts: 'Desserts',
+        beverages: 'Beverages',
+        sandwiches: 'Sandwiches',
+        category: 'Category',
+        categoryHint: '(you can change this when editing)',
+        addNewItem: 'Add New Item',
+        editItem: 'Edit Item',
+        menuItems: 'Menu Items',
+        name: 'Name',
+        description: 'Description',
+        price: 'Price',
+        image: 'Image',
+        addItem: 'Add Item',
+        updateItem: 'Update Item',
+        cancelEdit: 'Cancel Edit',
+        edit: 'Edit',
+        delete: 'Delete',
+        noItems: 'No items in this category. Add one using the form!',
+        noItemsAll: 'No items found. Add one using the form!',
+        showingItems: 'Showing',
+        itemsFromAll: 'items from all categories',
+        item: 'item',
+        items: 'items'
+      },
+      ar: {
+        headerTitle: '🍽️ لوحة التحكم',
+        headerSubtitle: 'مطعم الأخوات - إدارة القائمة',
+        showAll: 'عرض الكل',
+        appetizers: 'المقبلات',
+        mainDishes: 'الأطباق الرئيسية',
+        grills: 'المشويات',
+        desserts: 'الحلويات',
+        beverages: 'المشروبات',
+        sandwiches: 'السندويشات',
+        category: 'الفئة',
+        categoryHint: '(يمكنك تغيير هذا عند التعديل)',
+        addNewItem: 'إضافة عنصر جديد',
+        editItem: 'تعديل العنصر',
+        menuItems: 'عناصر القائمة',
+        name: 'الاسم',
+        description: 'الوصف',
+        price: 'السعر',
+        image: 'الصورة',
+        addItem: 'إضافة عنصر',
+        updateItem: 'تحديث العنصر',
+        cancelEdit: 'إلغاء التعديل',
+        edit: 'تعديل',
+        delete: 'حذف',
+        noItems: 'لا توجد عناصر في هذه الفئة. أضف واحدة باستخدام النموذج!',
+        noItemsAll: 'لا توجد عناصر. أضف واحدة باستخدام النموذج!',
+        showingItems: 'عرض',
+        itemsFromAll: 'عنصر من جميع الفئات',
+        item: 'عنصر',
+        items: 'عناصر'
+      }
+    };
+
+    // Language switching function
+    window.switchDashboardLanguage = function(lang) {
+      currentLang = lang;
+      localStorage.setItem('dashboard-lang', lang);
+      
+      // Update language buttons
+      document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+      document.getElementById('lang-ar').classList.toggle('active', lang === 'ar');
+      
+      // Update header
+      document.getElementById('header-title').textContent = translations[lang].headerTitle;
+      document.getElementById('header-subtitle').textContent = translations[lang].headerSubtitle;
+      
+      // Update all elements with lang-text class
+      document.querySelectorAll('.lang-text').forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (key && translations[lang][key]) {
+          if (el.tagName === 'OPTION') {
+            el.textContent = translations[lang][key];
+          } else {
+            el.textContent = translations[lang][key];
+          }
+        }
+      });
+      
+      // Update category select options
+      const categorySelect = document.getElementById('category-select');
+      Array.from(categorySelect.options).forEach(option => {
+        const key = option.getAttribute('data-key');
+        if (key && translations[lang][key]) {
+          option.textContent = translations[lang][key];
+        }
+      });
+      
+      // Update category names in display
+      updateCategoryNames();
+      
+      // Update form title and buttons if needed
+      if (document.getElementById('form-title')) {
+        const isEditing = editingItem !== null;
+        document.getElementById('form-title').textContent = isEditing 
+          ? translations[lang].editItem 
+          : translations[lang].addNewItem;
+      }
+      
+      if (document.getElementById('submit-btn')) {
+        const isEditing = editingItem !== null;
+        document.getElementById('submit-btn').textContent = isEditing 
+          ? translations[lang].updateItem 
+          : translations[lang].addItem;
+      }
+      
+      if (document.getElementById('cancel-btn')) {
+        document.getElementById('cancel-btn').textContent = translations[lang].cancelEdit;
+      }
+      
+      // Update document direction
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      document.documentElement.lang = lang;
+    };
+
+    // Update category names in categoryNames object
+    function updateCategoryNames() {
+      Object.keys(categoryNames).forEach(key => {
+        categoryNames[key] = translations[currentLang][key] || categoryNames[key];
+      });
+    }
+
+    // Tab switching
+    document.querySelectorAll('.tab-button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const category = btn.dataset.category;
+        showAll = category === 'all';
+        
+        // Only switch tabs if not currently editing
+        if (!editingItem) {
+          document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentCategory = category;
+          
+          if (!showAll) {
+            document.getElementById('category-select').value = category;
+          }
+          loadItems();
+        } else {
+          // If editing, allow viewing other categories but don't change the form dropdown
+          document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentCategory = category;
+          loadItems();
+          console.log('📝 Editing mode: Viewing category', currentCategory, 'but form category dropdown remains editable');
+        }
+      });
+    });
+    
+    // Allow category dropdown to be changed even when editing
+    document.getElementById('category-select').addEventListener('change', (e) => {
+      console.log('📝 Category dropdown changed to:', e.target.value);
+      if (editingItem) {
+        console.log('   - Currently editing item, category can be changed');
+      }
+    });
+
+    // Image file preview
+    document.getElementById('image-file').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          document.getElementById('preview-img').src = e.target.result;
+          document.getElementById('image-preview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      } else {
+        document.getElementById('image-preview').style.display = 'none';
+      }
+    });
+
+    // Form submission
+    document.getElementById('item-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const category = document.getElementById('category-select').value;
+      const name = {
+        en: document.getElementById('name-en').value,
+        ar: document.getElementById('name-ar').value
+      };
+      const description = {
+        en: document.getElementById('description-en').value,
+        ar: document.getElementById('description-ar').value
+      };
+      const price = parseInt(document.getElementById('price').value);
+      const imageFile = document.getElementById('image-file').files[0];
+      const imageUrl = document.getElementById('image').value;
+      const itemId = document.getElementById('item-id').value;
+
+      try {
+        let image = imageUrl;
+        let cloudinaryId = null;
+
+        // Upload image file if provided
+        if (imageFile) {
+          const formData = new FormData();
+          formData.append('image', imageFile);
+          
+          const uploadResponse = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData
+          });
+          
+          if (uploadResponse.ok) {
+            const uploadData = await uploadResponse.json();
+            image = uploadData.imageUrl;
+            cloudinaryId = uploadData.cloudinaryId;
+          } else {
+            const error = await uploadResponse.json();
+            const errorMsg = error.error || 'Unknown error';
+            
+            // If Cloudinary is not configured, allow using URL instead
+            if (errorMsg.includes('Cloudinary is not configured')) {
+              if (!imageUrl) {
+                showMessage('Cloudinary is not configured. Please either:\n1. Configure Cloudinary in .env file, or\n2. Enter an image URL instead of uploading a file', 'error');
+                return;
+              } else {
+                // Use the URL instead
+                showMessage('Cloudinary not configured. Using image URL instead.', 'error');
+                image = imageUrl;
+              }
+            } else {
+              showMessage('Image upload failed: ' + errorMsg, 'error');
+              return;
+            }
+          }
+        }
+
+        let response;
+        if (editingItem && itemId) {
+          // Update - use the selected category from dropdown
+          const newCategory = document.getElementById('category-select').value;
+          const oldCategory = document.getElementById('item-category').value || category;
+          console.log('🔄 Updating item:', itemId);
+          console.log('   - Old category:', oldCategory);
+          console.log('   - New category:', newCategory);
+          
+          // Use old category in URL, but send new category in body if changed
+          response = await fetch(`${API_URL}/${oldCategory}/${itemId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              name, 
+              description, 
+              price, 
+              image, 
+              cloudinaryId,
+              category: newCategory // Include new category in body
+            })
+          });
+        } else {
+          // Create
+          response = await fetch(`${API_URL}/${category}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, description, price, image, cloudinaryId })
+          });
+        }
+
+        if (response.ok) {
+          const result = await response.json();
+          showMessage('Item saved successfully!', 'success');
+          resetForm();
+          
+          // If category changed during edit, switch to new category tab
+          if (editingItem && result.category && result.category !== currentCategory) {
+            currentCategory = result.category;
+            document.querySelectorAll('.tab-button').forEach(btn => {
+              if (btn.dataset.category === result.category) {
+                btn.classList.add('active');
+              } else {
+                btn.classList.remove('active');
+              }
+            });
+            console.log('📦 Category changed, switching to:', result.category);
+          }
+          
+          loadItems();
+        } else {
+          const error = await response.json();
+          showMessage(error.error || 'Failed to save item', 'error');
+        }
+      } catch (error) {
+        showMessage('Error: ' + error.message, 'error');
+      }
+    });
+
+    // Cancel edit
+    document.getElementById('cancel-btn').addEventListener('click', () => {
+      resetForm();
+    });
+
+    // Load items
+    async function loadItems() {
+      try {
+        let items = [];
+        
+        if (showAll || currentCategory === 'all') {
+          // Fetch all items from all categories
+          const categories = ['appetizers', 'mainDishes', 'grills', 'desserts', 'beverages', 'sandwiches'];
+          const allItemsPromises = categories.map(cat => 
+            fetch(`${API_URL}/${cat}`).then(res => res.json())
+          );
+          
+          const allItemsArrays = await Promise.all(allItemsPromises);
+          items = allItemsArrays.flat();
+          
+          // Sort by creation date (newest first)
+          items.sort((a, b) => {
+            const dateA = new Date(a.createdAt || 0);
+            const dateB = new Date(b.createdAt || 0);
+            return dateB - dateA;
+          });
+        } else {
+          const response = await fetch(`${API_URL}/${currentCategory}`);
+          items = await response.json();
+        }
+        
+        displayItems(items);
+      } catch (error) {
+        showMessage('Error loading items: ' + error.message, 'error');
+      }
+    }
+
+    // Category name mapping - will be updated by language switcher
+    let categoryNames = {
+      appetizers: translations[currentLang].appetizers,
+      mainDishes: translations[currentLang].mainDishes,
+      grills: translations[currentLang].grills,
+      desserts: translations[currentLang].desserts,
+      beverages: translations[currentLang].beverages,
+      sandwiches: translations[currentLang].sandwiches
+    };
+
+    // Display items
+    function displayItems(items) {
+      const container = document.getElementById('items-list');
+      
+      if (items.length === 0) {
+        const message = showAll 
+          ? `<p>${translations[currentLang].noItemsAll}</p>`
+          : `<p>${translations[currentLang].noItems}</p>`;
+        container.innerHTML = message;
+        return;
+      }
+
+      // Show count when showing all
+      const itemWord = items.length === 1 ? translations[currentLang].item : translations[currentLang].items;
+      const countText = showAll 
+        ? `<p style="margin-bottom: 15px; color: var(--text-light); font-weight: 600;">📊 ${translations[currentLang].showingItems} ${items.length} ${itemWord} ${translations[currentLang].itemsFromAll}</p>` 
+        : '';
+
+      container.innerHTML = countText + items.map(item => {
+        const itemId = item._id || item.id;
+        const imageUrl = item.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop';
+        const categoryName = categoryNames[item.category] || item.category || 'Uncategorized';
+        return `
+        <div class="item-card">
+          <div class="item-image-container">
+            <img src="${imageUrl}" alt="${item.name.en || 'Menu item'}" class="item-image" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop'">
+            <div class="item-category-badge">${categoryName}</div>
+          </div>
+          <div class="item-header">
+            <div>
+              <div class="item-name">${item.name.en} / ${item.name.ar}</div>
+            </div>
+            <div class="item-price">${item.price} SDG</div>
+          </div>
+          <div class="item-description">
+            <strong>EN:</strong> ${item.description.en}<br>
+            <strong>AR:</strong> ${item.description.ar}
+          </div>
+          <div class="item-actions">
+            <button class="btn-small btn-edit" onclick="editItem('${itemId}', '${item.category}')">${translations[currentLang].edit}</button>
+            <button class="btn-small btn-delete" onclick="deleteItem('${itemId}', '${item.category}')">${translations[currentLang].delete}</button>
+          </div>
+        </div>
+      `;
+      }).join('');
+    }
+
+    // Edit item
+    window.editItem = async function(id, category) {
+      try {
+        console.log('📝 Editing item:', id, 'in category:', category);
+        const response = await fetch(`${API_URL}/${category || currentCategory}`);
+        const items = await response.json();
+        const item = items.find(i => (i._id || i.id) === id);
+        
+        if (!item) {
+          showMessage('Item not found', 'error');
+          return;
+        }
+        
+        console.log('✅ Item found:', item);
+        editingItem = item;
+        const itemId = item._id || item.id;
+        const itemCategory = item.category || category || currentCategory;
+        
+        document.getElementById('item-id').value = itemId;
+        document.getElementById('item-category').value = itemCategory;
+        document.getElementById('category-select').value = itemCategory;
+        document.getElementById('name-en').value = item.name.en || '';
+        document.getElementById('name-ar').value = item.name.ar || '';
+        document.getElementById('description-en').value = item.description.en || '';
+        document.getElementById('description-ar').value = item.description.ar || '';
+        document.getElementById('price').value = item.price || '';
+        document.getElementById('image').value = item.image || '';
+        
+        // Reset language switchers to English when editing
+        if (typeof switchLanguage === 'function') {
+          switchLanguage('en');
+        }
+        if (typeof switchDescriptionLanguage === 'function') {
+          switchDescriptionLanguage('en');
+        }
+        
+        // Clear file input
+        document.getElementById('image-file').value = '';
+        
+        // Show image preview if exists
+        if (item.image) {
+          document.getElementById('preview-img').src = item.image;
+          document.getElementById('image-preview').style.display = 'block';
+        } else {
+          document.getElementById('image-preview').style.display = 'none';
+        }
+        
+        document.getElementById('form-title').textContent = translations[currentLang].editItem;
+        document.getElementById('submit-btn').textContent = translations[currentLang].updateItem;
+        document.getElementById('cancel-btn').textContent = translations[currentLang].cancelEdit;
+        document.getElementById('cancel-btn').style.display = 'block';
+        
+        // Ensure category dropdown is enabled and editable
+        const categorySelect = document.getElementById('category-select');
+        categorySelect.disabled = false;
+        categorySelect.removeAttribute('readonly');
+        categorySelect.style.pointerEvents = 'auto';
+        categorySelect.style.opacity = '1';
+        categorySelect.style.cursor = 'pointer';
+        console.log('✅ Category dropdown enabled for editing');
+        console.log('   - Current category:', itemCategory);
+        console.log('   - Dropdown value:', categorySelect.value);
+        
+        // Update current category if different
+        if (itemCategory !== currentCategory) {
+          currentCategory = itemCategory;
+          // Update active tab
+          document.querySelectorAll('.tab-button').forEach(btn => {
+            if (btn.dataset.category === itemCategory) {
+              btn.classList.add('active');
+            } else {
+              btn.classList.remove('active');
+            }
+          });
+        }
+        
+        document.getElementById('item-form').scrollIntoView({ behavior: 'smooth' });
+      } catch (error) {
+        console.error('Error editing item:', error);
+        showMessage('Error loading item: ' + error.message, 'error');
+      }
+    };
+
+    // Delete item
+    window.deleteItem = async function(id, category) {
+      const itemCategory = category || currentCategory;
+      const itemName = 'this item';
+      
+      if (!confirm(`Are you sure you want to delete ${itemName}? This action cannot be undone.`)) {
+        return;
+      }
+      
+      try {
+        console.log('🗑️ Deleting item:', id, 'from category:', itemCategory);
+        const response = await fetch(`${API_URL}/${itemCategory}/${id}`, {
+          method: 'DELETE'
+        });
+        
+        if (response.ok) {
+          showMessage('Item deleted successfully!', 'success');
+          loadItems();
+        } else {
+          const error = await response.json();
+          console.error('Delete error:', error);
+          showMessage(error.error || 'Failed to delete item', 'error');
+        }
+      } catch (error) {
+        console.error('Delete error:', error);
+        showMessage('Error: ' + error.message, 'error');
+      }
+    };
+
+    // Reset form
+    function resetForm() {
+      editingItem = null;
+      document.getElementById('item-form').reset();
+      document.getElementById('item-id').value = '';
+      document.getElementById('item-category').value = '';
+      document.getElementById('category-select').value = currentCategory;
+      
+      // Ensure category dropdown is enabled
+      const categorySelect = document.getElementById('category-select');
+      categorySelect.disabled = false;
+      categorySelect.style.pointerEvents = 'auto';
+      categorySelect.style.opacity = '1';
+      
+      // Reset language switchers to English
+      if (typeof switchLanguage === 'function') {
+        switchLanguage('en');
+      }
+      if (typeof switchDescriptionLanguage === 'function') {
+        switchDescriptionLanguage('en');
+      }
+      
+      document.getElementById('form-title').textContent = translations[currentLang].addNewItem;
+      document.getElementById('submit-btn').textContent = translations[currentLang].addItem;
+      document.getElementById('cancel-btn').style.display = 'none';
+      document.getElementById('image-preview').style.display = 'none';
+      document.getElementById('image-file').value = '';
+    }
+
+    // Show message
+    function showMessage(text, type) {
+      const messageDiv = document.getElementById('message');
+      messageDiv.className = `message ${type}`;
+      messageDiv.textContent = text;
+      messageDiv.style.display = 'block';
+      
+      setTimeout(() => {
+        messageDiv.style.display = 'none';
+      }, 5000);
+    }
+
+    // Language switching for name
+    window.switchLanguage = function(lang) {
+      document.querySelectorAll('.language-switcher .lang-btn').forEach(btn => {
+        if (btn.closest('.form-group').querySelector('label').textContent.includes('Name')) {
+          btn.classList.remove('active');
+          if (btn.dataset.lang === lang) {
+            btn.classList.add('active');
+          }
+        }
+      });
+      
+      document.querySelectorAll('#name-en, #name-ar').forEach(input => {
+        if (input.dataset.lang === lang) {
+          input.classList.add('active');
+          input.style.display = 'block';
+          input.focus();
+        } else {
+          input.classList.remove('active');
+          input.style.display = 'none';
+        }
+      });
+    };
+
+    // Language switching for description
+    window.switchDescriptionLanguage = function(lang) {
+      document.querySelectorAll('.language-switcher .lang-btn').forEach(btn => {
+        if (btn.closest('.form-group').querySelector('label').textContent.includes('Description')) {
+          btn.classList.remove('active');
+          if (btn.dataset.lang === lang) {
+            btn.classList.add('active');
+          }
+        }
+      });
+      
+      document.querySelectorAll('#description-en, #description-ar').forEach(textarea => {
+        if (textarea.dataset.lang === lang) {
+          textarea.classList.add('active');
+          textarea.style.display = 'block';
+          textarea.focus();
+        } else {
+          textarea.classList.remove('active');
+          textarea.style.display = 'none';
+        }
+      });
+    };
+
+    // Initialize language
+    switchDashboardLanguage(currentLang);
+    
+    // Initialize
+    // Set default category to first category (not "all") for the form
+    if (showAll) {
+      document.getElementById('category-select').value = 'appetizers';
+    } else {
+      document.getElementById('category-select').value = currentCategory;
+    }
+    
+    // Ensure category dropdown is always enabled
+    const categorySelect = document.getElementById('category-select');
+    categorySelect.disabled = false;
+    categorySelect.removeAttribute('readonly');
+    categorySelect.style.pointerEvents = 'auto';
+    categorySelect.style.opacity = '1';
+    categorySelect.style.cursor = 'pointer';
+    
+    // Monitor for any attempts to disable the dropdown
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'disabled') {
+          if (categorySelect.disabled) {
+            console.warn('⚠️ Category dropdown was disabled, re-enabling...');
+            categorySelect.disabled = false;
+          }
+        }
+      });
+    });
+    observer.observe(categorySelect, { attributes: true, attributeFilter: ['disabled'] });
+    
+    loadItems();
+  </script>
+</body>
+</html>
+
